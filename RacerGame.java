@@ -71,4 +71,14 @@ public class RacerGame extends Game {
             case LEFT: player.setDirection(Direction.LEFT); break;
         }
     }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        if (key == Key.RIGHT && player.getDirection() == Direction.RIGHT){
+            player.setDirection(Direction.NONE);
+        } else if (key == Key.LEFT && player.getDirection() == Direction.LEFT){
+            player.setDirection(Direction.NONE);
+        }
+    }
 }
+
