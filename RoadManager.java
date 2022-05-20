@@ -13,6 +13,7 @@ public class RoadManager {
     private static final int FIRST_LANE_POSITION = 16;
     private static final int FOURTH_LANE_POSITION = 44;
     private List<RoadObject> items = new ArrayList<>();
+    private static final int PLAYER_CAR_DISTANCE = 12;
 
 
     private RoadObject createRoadObject(RoadObjectType roadObject, int x, int y){
@@ -27,7 +28,9 @@ public class RoadManager {
         int x = game.getRandomNumber(FIRST_LANE_POSITION, FOURTH_LANE_POSITION);
         int y = -1 * RoadObject.getHeight(type);
         RoadObject object = createRoadObject(type, x, y);
-        if (object != null) items.add(object);
+        if (isRoadSpaceFree(object)) {
+            items.add(object);
+        }
     }
 
     private void generateRegularCar(Game game){
@@ -52,23 +55,30 @@ public class RoadManager {
     }
 
     public boolean checkCrash(PlayerCar car){
-        boolean isCrashable = false;
         for (RoadObject item : items) {
             if (item.isCollision(car)){
-                isCrashable = true;
+                return true;
             }
         }
-        return isCrashable;
+        return false;
+    }
+
+    private boolean isRoadSpaceFree(RoadObject object){
+        for (RoadObject item : items) {
+            if (item.isCollisionWithDistance(object, PLAYER_CAR_DISTANCE)){
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean spikeExists(){
-        boolean isContainingASpike = false;
         for (RoadObject item : items) {
             if (item instanceof Spike){
-                isContainingASpike = true;
+                return true;
             }
         }
-        return isContainingASpike;
+        return false;
     }
 
     private void generateSpike(Game game){
