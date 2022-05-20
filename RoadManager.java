@@ -39,4 +39,25 @@ public class RoadManager {
             item.move(boost+ item.speed);
         }
     }
+
+    private boolean spikeExists(){
+        boolean isContainingASpike = false;
+        for (RoadObject item : items) {
+            if (item instanceof Spike){
+                isContainingASpike = true;
+            }
+        }
+        return isContainingASpike;
+    }
+
+    private void generateSpike(Game game){
+        int i = game.getRandomNumber(100);
+        if (i < 10 && !spikeExists()){
+            addRoadObject(RoadObjectType.SPIKE, game);
+        }
+    }
+
+    public void generateNewRoadObjects(Game game){
+        generateSpike(game);
+    }
 }
