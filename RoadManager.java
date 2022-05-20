@@ -1,6 +1,7 @@
 package com.codegym.games.racer.road;
 
 import com.codegym.engine.cell.Game;
+import com.codegym.games.racer.PlayerCar;
 import com.codegym.games.racer.RacerGame;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,6 +41,16 @@ public class RoadManager {
             item.move(boost+ item.speed);
         }
         deletePassedItems();
+    }
+
+    public boolean checkCrash(PlayerCar car){
+        boolean isCrashable = false;
+        for (RoadObject item : items) {
+            if (item.isCollision(car)){
+                isCrashable = true;
+            }
+        }
+        return isCrashable;
     }
 
     private boolean spikeExists(){
