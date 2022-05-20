@@ -3,6 +3,7 @@ package com.codegym.games.racer.road;
 import com.codegym.engine.cell.Game;
 import com.codegym.games.racer.RacerGame;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RoadManager {
@@ -38,6 +39,7 @@ public class RoadManager {
         for (RoadObject item : items) {
             item.move(boost+ item.speed);
         }
+        deletePassedItems();
     }
 
     private boolean spikeExists(){
@@ -59,5 +61,16 @@ public class RoadManager {
 
     public void generateNewRoadObjects(Game game){
         generateSpike(game);
+    }
+
+    private void deletePassedItems(){
+        Iterator<RoadObject> iterator = items.listIterator();
+        while (iterator.hasNext()){
+            RoadObject roadObject = iterator.next();
+            if (roadObject.y >= RacerGame.HEIGHT){
+                iterator.remove();
+            }
+        }
+
     }
 }
