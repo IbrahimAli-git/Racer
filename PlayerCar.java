@@ -25,11 +25,13 @@ public class PlayerCar extends GameObject {
         } else if(x > RoadManager.RIGHT_BORDER-width){
             x = RoadManager.RIGHT_BORDER-width;
         }
-
         switch (direction){
             case LEFT: x--; break;
             case RIGHT: x++; break;
         }
     }
-}
 
+    public void stop(){
+        matrix = ShapeMatrix.PLAYER_DEAD;
+    }
+}
