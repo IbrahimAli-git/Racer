@@ -14,11 +14,18 @@ public class RoadManager {
     private static final int FOURTH_LANE_POSITION = 44;
     private List<RoadObject> items = new ArrayList<>();
     private static final int PLAYER_CAR_DISTANCE = 12;
+    private int passedCarsCount = 0;
 
+
+    public int getPassedCarsCount() {
+        return passedCarsCount;
+    }
 
     private RoadObject createRoadObject(RoadObjectType roadObject, int x, int y){
         if (roadObject == RoadObjectType.SPIKE){
             return new Spike(x, y);
+        } else if (roadObject == RoadObjectType.DRUNK_CAR){
+            return new MovingCar(x, y);
         } else {
             return new Car(roadObject, x, y);
         }
@@ -49,7 +56,7 @@ public class RoadManager {
 
     public void move(int boost){
         for (RoadObject item : items) {
-            item.move(boost+ item.speed);
+            item.move(boost+ item.speed, items);
         }
         deletePassedItems();
     }
@@ -81,6 +88,22 @@ public class RoadManager {
         return false;
     }
 
+    private boolean movingCarExists(){
+        for (RoadObject item : items) {
+            if (item instanceof MovingCar){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void generateMovingCar(Game game){
+        int i = game.getRandomNumber(100);
+        if (i < 10 && !movingCarExists()){
+            addRoadObject(RoadObjectType.DRUNK_CAR, game);
+        }
+    }
+
     private void generateSpike(Game game){
         int i = game.getRandomNumber(100);
         if (i < 10 && !spikeExists()){
@@ -91,6 +114,7 @@ public class RoadManager {
     public void generateNewRoadObjects(Game game) {
         generateSpike(game);
         generateRegularCar(game);
+        generateMovingCar(game);
     }
 
     private void deletePassedItems(){
@@ -99,6 +123,9 @@ public class RoadManager {
             RoadObject roadObject = iterator.next();
             if (roadObject.y >= RacerGame.HEIGHT){
                 iterator.remove();
+                if (!(roadObject instanceof Spike)){
+                    passedCarsCount++;
+                }
             }
         }
 
