@@ -21,9 +21,10 @@ public class RoadObject extends GameObject {
      * The method responsible for moving an obstacle. An obstacle can have its own speed and a secondary speed
      * that depends on the player's speed.
      */
-    public void move(int boost) {
+    public void move(int boost, List<RoadObject> roadObjects) {
         this.y += boost;
     }
+
 
     /**
      * Checks whether the images of the current object and the passed object are
